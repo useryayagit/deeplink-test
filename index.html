@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Deeplink Test</title>
+</head>
+<body>
+<h2>WebView / JS Bridge Test</h2>
+
+<script>
+alert("Page loaded");
+
+/* 探测常见 JS Bridge */
+if (window.Android) alert("Android interface exists");
+if (window.native) alert("native interface exists");
+if (window.honor) alert("honor interface exists");
+
+/* 枚举对象 */
+for (let k in window) {
+    if (typeof window[k] === "object") {
+        console.log("object:", k);
+    }
+}
+</script>
+
+</body>
+</html>
