@@ -18,6 +18,7 @@ alert(window);
 /* 枚举对象 */
 for (let k in window) {
     if (typeof window[k] === "object") {
+        alert(k);
         console.log("object:", k);
     }
 }
