@@ -62,17 +62,17 @@
          // 方式一
             if (typeof myHonorInterfaceOversea !== 'undefined' && myHonorInterfaceOversea !== null) {
                 const token = myHonorInterfaceOversea.getGooglePushToken();
-                console.log("Google Push Token (myHonorInterfaceOversea):", token);
+                alert("Google Push Token (myHonorInterfaceOversea):", token);
             } else {
-                console.warn("myHonorInterfaceOversea 接口未找到。");
+                alert("myHonorInterfaceOversea 接口未找到。");
             }
             
             // 方式二
             if (typeof hicareJsInterface !== 'undefined' && hicareJsInterface !== null) {
                 const token = hicareJsInterface.getGooglePushToken();
-                console.log("Google Push Token (hicareJsInterface):", token);
+                alert("Google Push Token (hicareJsInterface):", token);
             } else {
-                console.warn("hicareJsInterface 接口未找到。");
+               alert("hicareJsInterface 接口未找到。");
             }
 
         }
