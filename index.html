@@ -61,7 +61,7 @@
         function getGooglePushToken() {
          // 方式一
             if (typeof myHonorInterfaceOversea !== 'undefined' && myHonorInterfaceOversea !== null) {
-                const token = myHonorInterfaceOversea.getGooglePushToken();
+                const token = myHonorInterfaceOversea.getDeviceSN();
                 alert("Google Push Token (myHonorInterfaceOversea):", token);
             } else {
                 alert("myHonorInterfaceOversea 接口未找到。");
@@ -69,7 +69,7 @@
             
             // 方式二
             if (typeof hicareJsInterface !== 'undefined' && hicareJsInterface !== null) {
-                const token = hicareJsInterface.getGooglePushToken();
+                const token = hicareJsInterface.getDeviceSN();
                 alert("Google Push Token (hicareJsInterface):", token);
             } else {
                alert("hicareJsInterface 接口未找到。");
