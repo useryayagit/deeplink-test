@@ -59,21 +59,22 @@
             }
         }
         function getGooglePushToken() {
-            // 检查 'Android' 接口是否存在
-            if (typeof integrationJsInterfaceWebview !== 'undefined' && Android !== null) {
-                try {
-                    // 调用原生 Java 对象的 getExtras() 方法
-                    const extraData = integrationJsInterfaceWebview.getGooglePushToken();
-                    document.getElementById('result').innerText = '从原生获取到的数据: ' + extraData;
-                    console.log('从原生获取到的数据:', extraData);
-                } catch (e) {
-                    document.getElementById('result').innerText = '调用原生方法时出错: ' + e.message;
-                    console.error('调用原生方法时出错:', e);
-                }
+         // 方式一
+            if (typeof myHonorInterfaceOversea !== 'undefined' && myHonorInterfaceOversea !== null) {
+                const token = myHonorInterfaceOversea.getGooglePushToken();
+                console.log("Google Push Token (myHonorInterfaceOversea):", token);
             } else {
-                document.getElementById('result').innerText = '原生 "Android" 接口未找到。';
-                console.warn('原生 "Android" 接口未找到，无法调用 getExtras()。');
+                console.warn("myHonorInterfaceOversea 接口未找到。");
             }
+            
+            // 方式二
+            if (typeof hicareJsInterface !== 'undefined' && hicareJsInterface !== null) {
+                const token = hicareJsInterface.getGooglePushToken();
+                console.log("Google Push Token (hicareJsInterface):", token);
+            } else {
+                console.warn("hicareJsInterface 接口未找到。");
+            }
+
         }
 
         // JS 异步回调函数
