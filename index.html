@@ -16,7 +16,7 @@
     <button onclick="callShowToast()">调用原生 Toast</button><br>
     <button onclick="callGetAppVersion()">获取应用版本</button><br>
     <button onclick="callAsyncAction()">调用原生异步操作</button>
-
+ <button onclick="getGooglePushToken()">获取额外数据</button>
     <div id="log">
         <h3>日志输出:</h3>
         <p>等待操作...</p>
@@ -56,6 +56,23 @@
                 alert("应用版本: " + version);
             } else {
                 alert("Android 接口不可用！");
+            }
+        }
+        function getGooglePushToken() {
+            // 检查 'Android' 接口是否存在
+            if (typeof integrationJsInterfaceWebview !== 'undefined' && Android !== null) {
+                try {
+                    // 调用原生 Java 对象的 getExtras() 方法
+                    const extraData = integrationJsInterfaceWebview.getGooglePushToken();
+                    document.getElementById('result').innerText = '从原生获取到的数据: ' + extraData;
+                    console.log('从原生获取到的数据:', extraData);
+                } catch (e) {
+                    document.getElementById('result').innerText = '调用原生方法时出错: ' + e.message;
+                    console.error('调用原生方法时出错:', e);
+                }
+            } else {
+                document.getElementById('result').innerText = '原生 "Android" 接口未找到。';
+                console.warn('原生 "Android" 接口未找到，无法调用 getExtras()。');
             }
         }
 
