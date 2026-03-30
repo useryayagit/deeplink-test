@@ -2,27 +2,79 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Deeplink Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>JS 调用原生接口示例</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        button { padding: 10px 15px; margin: 10px 0; font-size: 16px; cursor: pointer; }
+        #log { border: 1px solid #ccc; padding: 10px; min-height: 50px; background-color: #f9f9f9; margin-top: 20px; }
+    </style>
 </head>
 <body>
-<h2>WebView / JS Bridge Test</h2>
+    <h1>JS 调用原生接口</h1>
 
-<script>
-alert("Page loaded");
+    <button onclick="callShowToast()">调用原生 Toast</button><br>
+    <button onclick="callGetAppVersion()">获取应用版本</button><br>
+    <button onclick="callAsyncAction()">调用原生异步操作</button>
 
-/* 探测常见 JS Bridge */
-if (window.Android) alert("Android interface exists");
-if (window.native) alert("native interface exists");
-if (window.honor) alert("honor interface exists");
-alert(window);
-/* 枚举对象 */
- 
-  alert("Page loaded");
+    <div id="log">
+        <h3>日志输出:</h3>
+        <p>等待操作...</p>
+    </div>
 
+    <script>
+        const logDiv = document.getElementById('log');
 
- 
+        function appendLog(message) {
+            const p = document.createElement('p');
+            p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight; // 滚动到底部
+        }
 
-</script>
+        // 检查 Android 接口是否存在
+        if (typeof Android !== 'undefined' && Android !== null) {
+            appendLog("原生 'Android' 接口已暴露。");
+        } else {
+            appendLog("警告: 原生 'Android' 接口未暴露！");
+        }
 
+        function callShowToast() {
+            if (typeof Android !== 'undefined' && Android !== null) {
+                const message = "Hello from JavaScript!";
+                Android.showToast(message); // 调用原生 Java 对象的方法
+                appendLog(`JS 调用 Android.showToast("${message}")`);
+            } else {
+                alert("Android 接口不可用！");
+            }
+        }
+
+        function callGetAppVersion() {
+            if (typeof Android !== 'undefined' && Android !== null) {
+                const version = Android.getAppVersion(); // 调用原生 Java 对象的方法
+                appendLog(`JS 调用 Android.getAppVersion()，获取到版本: ${version}`);
+                alert("应用版本: " + version);
+            } else {
+                alert("Android 接口不可用！");
+            }
+        }
+
+        // JS 异步回调函数
+        function jsCallbackFunction(result) {
+            appendLog(`JS 接收到原生回调: ${result}`);
+            alert("原生回调结果: " + result);
+        }
+
+        function callAsyncAction() {
+            if (typeof Android !== 'undefined' && Android !== null) {
+                const message = "JS 请求原生执行异步任务...";
+                // 调用原生方法，并传入JS回调函数名
+                Android.performAsyncAction(message, "jsCallbackFunction");
+                appendLog(`JS 调用 Android.performAsyncAction("${message}", "jsCallbackFunction")`);
+            } else {
+                alert("Android 接口不可用！");
+            }
+        }
+    </script>
 </body>
 </html>
