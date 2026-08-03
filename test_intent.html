@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intent URL 测试 - MagicVoice VideoCall</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h2 {
+            color: #333;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .intent-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .intent-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .intent-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .warning strong {
+            color: #856404;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-list li:hover {
+            transform: translateX(10px);
+            background: #667eea;
+            color: white;
+        }
+        
+        .feature-list li:before {
+            content: "→ ";
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .feature-list li:hover:before {
+            color: white;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .status.pending {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .details {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Intent URL 测试</h1>
+        
+        <div class="info-box">
+            <h2>📋 Intent 信息</h2>
+            <p><strong>目标应用:</strong> com.hihonor.magicvoice (YOYO 语音助手)</p>
+            <p><strong>功能:</strong> 视频通话 (VideoCall)</p>
+            <p><strong>权限要求:</strong> signature (系统签名权限)</p>
+        </div>
+        
+        <div class="info-box">
+            <h2>🔗 Intent URL</h2>
+            <div class="code-block" id="intentUrlDisplay"></div>
+        </div>
+        
+        <div class="button-container">
+            <a id="intentLink" class="intent-button" href="#">
+                📞 触发视频通话 Intent
+            </a>
+        </div>
+        
+        <div id="statusMessage" class="status pending" style="display: none;"></div>
+        
+        <div class="warning">
+            <strong>⚠️ 注意事项:</strong>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>此 Intent 需要系统签名权限</li>
+                <li>只能在荣耀/华为设备上使用</li>
+                <li>需要安装 MagicVoice 应用</li>
+                <li>普通第三方应用无法调用</li>
+            </ul>
+        </div>
+        
+        <div class="details">
+            <h2>📊 Intent 参数解析</h2>
+            <ul class="feature-list">
+                <li><strong>Package:</strong> com.hihonor.magicvoice</li>
+                <li><strong>Action:</strong> videocall</li>
+                <li><strong>Scheme:</strong> yoyo</li>
+                <li><strong>openWhichRTC:</strong> 2 (RTC 类型)</li>
+                <li><strong>pressMethod:</strong> long_press (长按方式)</li>
+            </ul>
+        </div>
+        
+        <div class="details">
+            <h2>🔐 权限说明</h2>
+            <div class="info-box">
+                <p>此 Intent URI 包含 <strong>signature</strong> 权限保护，意味着:</p>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>只有系统应用可以调用</li>
+                    <li>需要与 MagicVoice 相同的签名</li>
+                    <li>普通应用会被拒绝</li>
+                    <li>这是为了保护用户隐私和安全</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+            <span class="tag">Intent</span>
+            <span class="tag">MagicVoice</span>
+            <span class="tag">VideoCall</span>
+            <span class="tag">YOYO</span>
+            <span class="tag">Signature Permission</span>
+        </div>
+    </div>
+    
+    <script>
+        // Intent URL 配置
+        var intentUrl = "intent://com.hihonor.magicvoice/videocall?openWhichRTC=2#Intent;scheme=yoyo;package=com.hihonor.magicvoice;S.pressMethod=long_press;end";
+        
+        // 创建链接
+        var link = document.createElement('a');
+        link.href = intentUrl;
+        link.textContent = "需要 signature 权限的 intentUri（com.hihonor.quickengine2）";
+        link.className = "intent-button";
+        link.style.display = "inline-block";
+        link.style.marginTop = "10px";
+        
+        // 设置显示
+        document.getElementById('intentUrlDisplay').textContent = intentUrl;
+        document.getElementById('intentLink').href = intentUrl;
+        
+        // 添加点击事件监听
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            var statusDiv = document.getElementById('statusMessage');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status pending';
+            statusDiv.textContent = '⏳ 正在尝试触发 Intent...';
+            
+            // 延迟执行，让用户看到提示
+            setTimeout(function() {
+                // 尝试通过 window.location 触发
+                try {
+                    window.location.href = intentUrl;
+                    
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Intent 已触发！请检查是否打开了 MagicVoice 应用。';
+                    
+                    // 3 秒后隐藏
+                    setTimeout(function() {
+                        statusDiv.style.display = 'none';
+                    }, 3000);
+                    
+                } catch (error) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ 触发失败：' + error.message;
+                }
+            }, 100);
+        });
+        
+        // 将链接添加到页面
+        document.body.appendChild(link);
+        
+        // 自动检测环境
+        window.addEventListener('load', function() {
+            var isAndroid = /Android/i.test(navigator.userAgent);
+            var isHonor = /HONOR|Huawei|Honor/i.test(navigator.userAgent);
+            
+            if (!isAndroid) {
+                var statusDiv = document.getElementById('statusMessage');
+                statusDiv.style.display = 'block';
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '⚠️ 此功能仅在 Android 设备上可用<br>当前设备可能不支持 Intent URL';
+            } else if (!isHonor) {
+                var statusDiv = document.getElementById('statusMessage');
+                statusDiv.style.display = 'block';
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '⚠️ 此功能仅在荣耀/华为设备上可用<br>当前设备可能没有 MagicVoice 应用';
+            }
+        });
+        
+        // 添加控制台日志
+        console.log('%c Intent URL Test ', 'background: #667eea; color: white; font-size: 16px; padding: 10px;');
+        console.log('Intent URL:', intentUrl);
+        console.log('Package:', 'com.hihonor.magicvoice');
+        console.log('Action:', 'videocall');
+        console.log('Scheme:', 'yoyo');
+        console.log('Parameters:', {
+            openWhichRTC: '2',
+            pressMethod: 'long_press'
+        });
+    </script>
+</body>
+</html>
